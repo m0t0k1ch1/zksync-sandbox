@@ -127,4 +127,6 @@ contract MinimalAccount is IAccount, IERC1271 {
             }
         }
     }
+
+    receive() external payable {}
 }
