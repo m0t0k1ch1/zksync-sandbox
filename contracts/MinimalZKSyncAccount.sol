@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.23;
 
-import {BOOTLOADER_FORMAL_ADDRESS, NONCE_HOLDER_SYSTEM_CONTRACT} from "@matterlabs/zksync-contracts/l2/system-contracts/Constants.sol";
+import {BOOTLOADER_FORMAL_ADDRESS, DEPLOYER_SYSTEM_CONTRACT, NONCE_HOLDER_SYSTEM_CONTRACT} from "@matterlabs/zksync-contracts/l2/system-contracts/Constants.sol";
 import {ACCOUNT_VALIDATION_SUCCESS_MAGIC, IAccount} from "@matterlabs/zksync-contracts/l2/system-contracts/interfaces/IAccount.sol";
 import {INonceHolder} from "@matterlabs/zksync-contracts/l2/system-contracts/interfaces/INonceHolder.sol";
 import {SystemContractsCaller} from "@matterlabs/zksync-contracts/l2/system-contracts/libraries/SystemContractsCaller.sol";
 import {Transaction, TransactionHelper} from "@matterlabs/zksync-contracts/l2/system-contracts/libraries/TransactionHelper.sol";
+import {Utils} from "@matterlabs/zksync-contracts/l2/system-contracts/libraries/Utils.sol";
 
 import "@openzeppelin/contracts/interfaces/IERC1271.sol";
 
@@ -13,6 +14,7 @@ import "./Constants.sol";
 
 error InvalidBootloader(address);
 error InsufficientBalance(uint256 available, uint256 required);
+error TransactionFailed();
 
 contract MinimalZKSyncAccount is IAccount, IERC1271 {
     using TransactionHelper for Transaction;
@@ -49,8 +51,37 @@ contract MinimalZKSyncAccount is IAccount, IERC1271 {
     function executeTransaction(
         bytes32,
         bytes32,
-        Transaction calldata
-    ) external payable override onlyBootloader {}
+        Transaction calldata tx_
+    ) external payable override onlyBootloader {
+        address to = address(uint160(tx_.to));
+        uint128 value = Utils.safeCastToU128(tx_.value);
+        bytes memory data = tx_.data;
+
+        if (to == address(DEPLOYER_SYSTEM_CONTRACT)) {
+            SystemContractsCaller.systemCallWithPropagatedRevert(
+                Utils.safeCastToU32(gasleft()),
+                to,
+                value,
+                data
+            );
+        } else {
+            bool success;
+            assembly {
+                success := call(
+                    gas(),
+                    to,
+                    value,
+                    add(data, 0x20),
+                    mload(data),
+                    0,
+                    0
+                )
+            }
+            if (!success) {
+                revert TransactionFailed();
+            }
+        }
+    }
 
     function executeTransactionFromOutside(
         Transaction calldata
