@@ -58,6 +58,9 @@ devDependencies:
   typescript:
     specifier: 5.3.3
     version: 5.3.3
+  zksync-ethers:
+    specifier: 6.0.0
+    version: 6.0.0(ethers@6.9.0)
 
 packages:
 

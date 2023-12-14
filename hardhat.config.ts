@@ -15,6 +15,9 @@ const config: HardhatUserConfig = {
     version: "0.8.23",
   },
   networks: {
+    sepolia: {
+      url: "https://rpc.sepolia.org",
+    },
     "zksync-sepolia": {
       url: "https://sepolia.era.zksync.dev",
       ethNetwork: "sepolia",

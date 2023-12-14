@@ -7,6 +7,7 @@
   "scripts": {
     "build": "hardhat compile --network zksync-sepolia",
     "clean": "rm -rf artifacts artifacts-zk cache cache-zk",
+    "deploy:minimal-account": "hardhat deploy-zksync --script MinimalAccount.ts --network zksync-sepolia",
     "commit": "cz"
   },
   "dependencies": {
@@ -28,6 +29,7 @@
     "hardhat": "2.19.2",
     "husky": "8.0.3",
     "ts-node": "10.9.2",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "zksync-ethers": "6.0.0"
   }
 }
