@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.23;
 
+import {BOOTLOADER_FORMAL_ADDRESS} from "@matterlabs/zksync-contracts/l2/system-contracts/Constants.sol";
+import {ACCOUNT_VALIDATION_SUCCESS_MAGIC, IAccount} from "@matterlabs/zksync-contracts/l2/system-contracts/interfaces/IAccount.sol";
+import {Transaction} from "@matterlabs/zksync-contracts/l2/system-contracts/libraries/TransactionHelper.sol";
+
 import "@openzeppelin/contracts/interfaces/IERC1271.sol";
 
 import "./Constants.sol";
-import "./IAccount.sol";
 
 error InvalidBootloader(address bootloader);
 
