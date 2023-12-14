@@ -14,6 +14,8 @@ import "./Constants.sol";
 
 error InvalidBootloader(address);
 error InsufficientBalance(uint256 available, uint256 required);
+
+error FeePaymentFailed();
 error TransactionFailed();
 
 contract MinimalAccount is IAccount, IERC1271 {
@@ -52,14 +54,21 @@ contract MinimalAccount is IAccount, IERC1271 {
     function payForTransaction(
         bytes32,
         bytes32,
-        Transaction calldata
-    ) external payable override onlyBootloader {}
+        Transaction calldata tx_
+    ) external payable override onlyBootloader {
+        bool success = tx_.payToTheBootloader();
+        if (!success) {
+            revert FeePaymentFailed();
+        }
+    }
 
     function prepareForPaymaster(
         bytes32,
         bytes32,
-        Transaction calldata
-    ) external payable override onlyBootloader {}
+        Transaction calldata tx_
+    ) external payable override onlyBootloader {
+        tx_.processPaymasterInput();
+    }
 
     function isValidSignature(
         bytes32,
