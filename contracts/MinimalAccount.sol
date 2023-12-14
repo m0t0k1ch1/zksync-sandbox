@@ -31,6 +31,43 @@ contract MinimalAccount is IAccount, IERC1271 {
         bytes32,
         Transaction calldata tx_
     ) external payable override onlyBootloader returns (bytes4) {
+        return _validateTransaction(tx_);
+    }
+
+    function executeTransaction(
+        bytes32,
+        bytes32,
+        Transaction calldata tx_
+    ) external payable override onlyBootloader {
+        _executeTransaction(tx_);
+    }
+
+    function executeTransactionFromOutside(
+        Transaction calldata
+    ) external payable override {}
+
+    function payForTransaction(
+        bytes32,
+        bytes32,
+        Transaction calldata
+    ) external payable override onlyBootloader {}
+
+    function prepareForPaymaster(
+        bytes32,
+        bytes32,
+        Transaction calldata
+    ) external payable override onlyBootloader {}
+
+    function isValidSignature(
+        bytes32,
+        bytes memory
+    ) external pure override returns (bytes4) {
+        return EIP1271_SUCCESS_MAGIC;
+    }
+
+    function _validateTransaction(
+        Transaction calldata tx_
+    ) private returns (bytes4) {
         SystemContractsCaller.systemCallWithPropagatedRevert(
             uint32(gasleft()),
             address(NONCE_HOLDER_SYSTEM_CONTRACT),
@@ -48,11 +85,7 @@ contract MinimalAccount is IAccount, IERC1271 {
         return ACCOUNT_VALIDATION_SUCCESS_MAGIC;
     }
 
-    function executeTransaction(
-        bytes32,
-        bytes32,
-        Transaction calldata tx_
-    ) external payable override onlyBootloader {
+    function _executeTransaction(Transaction calldata tx_) private {
         address to = address(uint160(tx_.to));
         uint128 value = Utils.safeCastToU128(tx_.value);
         bytes memory data = tx_.data;
@@ -81,28 +114,5 @@ contract MinimalAccount is IAccount, IERC1271 {
                 revert TransactionFailed();
             }
         }
-    }
-
-    function executeTransactionFromOutside(
-        Transaction calldata
-    ) external payable override {}
-
-    function payForTransaction(
-        bytes32,
-        bytes32,
-        Transaction calldata
-    ) external payable override onlyBootloader {}
-
-    function prepareForPaymaster(
-        bytes32,
-        bytes32,
-        Transaction calldata
-    ) external payable override onlyBootloader {}
-
-    function isValidSignature(
-        bytes32,
-        bytes memory
-    ) external pure override returns (bytes4) {
-        return EIP1271_SUCCESS_MAGIC;
     }
 }
