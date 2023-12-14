@@ -43,8 +43,11 @@ contract MinimalAccount is IAccount, IERC1271 {
     }
 
     function executeTransactionFromOutside(
-        Transaction calldata
-    ) external payable override {}
+        Transaction calldata tx_
+    ) external payable override {
+        _validateTransaction(tx_);
+        _executeTransaction(tx_);
+    }
 
     function payForTransaction(
         bytes32,
