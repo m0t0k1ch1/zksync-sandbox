@@ -5,11 +5,18 @@
     }
   },
   "scripts": {
+    "build": "hardhat compile",
+    "clean": "hardhat clean",
     "commit": "cz"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "4.6.0"
   },
   "devDependencies": {
     "@commitlint/cli": "18.4.3",
     "@commitlint/config-conventional": "18.4.3",
+    "@matterlabs/hardhat-zksync-deploy": "1.1.1",
+    "@matterlabs/hardhat-zksync-solc": "1.0.5",
     "@nomicfoundation/hardhat-toolbox": "4.0.0",
     "@types/chai": "4.3.11",
     "@types/mocha": "10.0.6",
