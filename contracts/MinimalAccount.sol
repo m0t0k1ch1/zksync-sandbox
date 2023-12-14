@@ -16,7 +16,7 @@ error InvalidBootloader(address);
 error InsufficientBalance(uint256 available, uint256 required);
 error TransactionFailed();
 
-contract MinimalZKSyncAccount is IAccount, IERC1271 {
+contract MinimalAccount is IAccount, IERC1271 {
     using TransactionHelper for Transaction;
 
     modifier onlyBootloader() {
