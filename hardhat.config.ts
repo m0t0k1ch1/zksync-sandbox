@@ -3,6 +3,7 @@ import "@nomicfoundation/hardhat-toolbox";
 
 import "@matterlabs/hardhat-zksync-solc";
 import "@matterlabs/hardhat-zksync-deploy";
+import "@matterlabs/hardhat-zksync-verify";
 
 const config: HardhatUserConfig = {
   zksolc: {
@@ -22,6 +23,8 @@ const config: HardhatUserConfig = {
       url: "https://sepolia.era.zksync.dev",
       ethNetwork: "sepolia",
       zksync: true,
+      verifyURL:
+        "https://explorer.sepolia.era.zksync.dev/contract_verification",
     },
   },
 };

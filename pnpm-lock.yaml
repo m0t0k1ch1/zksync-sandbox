@@ -25,6 +25,9 @@ devDependencies:
   '@matterlabs/hardhat-zksync-solc':
     specifier: 1.0.5
     version: 1.0.5(hardhat@2.19.2)
+  '@matterlabs/hardhat-zksync-verify':
+    specifier: 1.2.1
+    version: 1.2.1(@nomicfoundation/hardhat-verify@2.0.2)(ethers@6.9.0)(hardhat@2.19.2)
   '@nomicfoundation/hardhat-toolbox':
     specifier: 4.0.0
     version: 4.0.0(@nomicfoundation/hardhat-chai-matchers@2.0.2)(@nomicfoundation/hardhat-ethers@3.0.5)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.2)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.11)(@types/mocha@10.0.6)(@types/node@20.10.4)(chai@4.3.10)(ethers@6.9.0)(hardhat-gas-reporter@1.0.9)(hardhat@2.19.2)(solidity-coverage@0.8.5)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.3.3)
@@ -679,6 +682,24 @@ packages:
       semver: 7.5.4
     transitivePeerDependencies:
       - encoding
+      - supports-color
+    dev: true
+
+  /@matterlabs/hardhat-zksync-verify@1.2.1(@nomicfoundation/hardhat-verify@2.0.2)(ethers@6.9.0)(hardhat@2.19.2):
+    resolution: {integrity: sha512-kysWVNi07dgqTbesuQUnIUXNJBKWpMfTOAFErV9C69KUNIZg776em5hosdINIConAbwnnLrVa1/4g//Zpltk5g==}
+    peerDependencies:
+      '@nomicfoundation/hardhat-verify': ^2.0.0
+    dependencies:
+      '@matterlabs/hardhat-zksync-solc': 1.0.5(hardhat@2.19.2)
+      '@nomicfoundation/hardhat-verify': 2.0.2(hardhat@2.19.2)
+      axios: 1.6.2
+      chalk: 4.1.2
+      zksync-ethers: 6.0.0(ethers@6.9.0)
+    transitivePeerDependencies:
+      - debug
+      - encoding
+      - ethers
+      - hardhat
       - supports-color
     dev: true
 
