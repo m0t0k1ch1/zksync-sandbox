@@ -11,7 +11,7 @@ export default async function (hre: HardhatRuntimeEnvironment) {
       throw new Error("PRIVATE_KEY required");
     }
 
-    deployer = new Deployer(hre, new Wallet(privkey));
+    deployer = new Deployer(hre, new Wallet(privkey), "create2Account");
   }
 
   const contract = await deployer.deploy(
