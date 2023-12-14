@@ -1,4 +1,4 @@
-# solidity-sandbox
+# zksync-sandbox
 
 ## Prerequisites
 
